@@ -11,16 +11,21 @@ from copy import deepcopy
 
 MSG = None
 
-app = Flask(__name__)
+#app = Flask(__name__)
+URL_PREFIX="y"
+app = Flask(__name__, static_url_path="{}/static".format(URL_PREFIX))
+
 
 MSG_INVALID_REQUEST = {'status': 'error', 'errmsg': 'invalid request'}
 
-@app.route('/')
+#@app.route('/')
+@app.route(URL_PREFIX + '/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/task', methods=['POST'])
+#@app.route('/task', methods=['POST'])
+@app.route(URL_PREFIX + '/task', methods=['POST'])
 def add_task():
     payload = request.get_json()
 
@@ -28,7 +33,8 @@ def add_task():
     return json.dumps(MSG.get())
 
 
-@app.route('/task/list', methods=['GET'])
+#@app.route('/task/list', methods=['GET'])
+@app.route(URL_PREFIX + '/task/list', methods=['GET'])
 def list_task():
     payload = {}
     exerpt = request.args.get('exerpt', None)
@@ -43,20 +49,23 @@ def list_task():
     return json.dumps(MSG.get())
 
 
-@app.route('/task/state_counter', methods=['GET'])
+#@app.route('/task/state_counter', methods=['GET'])
+@app.route(URL_PREFIX + '/task/state_counter', methods=['GET'])
 def list_state():
     MSG.put('state', None)
     return json.dumps(MSG.get())
 
 
-@app.route('/task/batch/<action>', methods=['POST'])
+#@app.route('/task/batch/<action>', methods=['POST'])
+@app.route(URL_PREFIX + '/task/batch/<action>', methods=['POST'])
 def task_batch(action):
     payload={'act': action, 'detail': request.get_json()}
 
     MSG.put('batch', payload)
     return json.dumps(MSG.get())
 
-@app.route('/task/tid/<tid>', methods=['DELETE'])
+#@app.route('/task/tid/<tid>', methods=['DELETE'])
+@app.route(URL_PREFIX + '/task/tid/<tid>', methods=['DELETE'])
 def delete_task(tid):
     del_flag = request.args.get('del_file', False)
     payload = {}
@@ -67,7 +76,8 @@ def delete_task(tid):
     return json.dumps(MSG.get())
 
 
-@app.route('/task/tid/<tid>', methods=['PUT'])
+#@app.route('/task/tid/<tid>', methods=['PUT'])
+@app.route(URL_PREFIX + '/task/tid/<tid>', methods=['PUT'])
 def manipulate_task(tid):
     payload = {}
     payload['tid'] = tid
@@ -84,7 +94,8 @@ def manipulate_task(tid):
     return json.dumps(MSG.get())
 
 
-@app.route('/task/tid/<tid>/status', methods=['GET'])
+#@app.route('/task/tid/<tid>/status', methods=['GET'])
+@app.route(URL_PREFIX + '/task/tid/<tid>/status', methods=['GET'])
 def query_task(tid):
     payload = {}
     payload['tid'] = tid
@@ -99,7 +110,8 @@ def query_task(tid):
     return json.dumps(MSG.get())
 
 
-@app.route('/config', methods=['GET', 'POST'])
+#@app.route('/config', methods=['GET', 'POST'])
+@app.route(URL_PREFIX + '/config', methods=['GET', 'POST'])
 def get_config():
     payload = {}
     if request.method == 'POST':
@@ -115,7 +127,8 @@ def get_config():
 ###
 # test cases
 ###
-@app.route('/test/<case>')
+#@app.route('/test/<case>')
+@app.route(URL_PREFIX + '/test/<case>')
 def test(case):
     return render_template('test/{}.html'.format(case))
 
