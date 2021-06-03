@@ -3,7 +3,7 @@ var videoDownload = (function (Vue, extendAM){
     var VueToast = window.vueToasts ? window.vueToasts.default || window.vueToasts : window.vueToasts;
     videoDownload.vm = null;
     videoDownload.tasksData = {
-        headPath: 'http://localhost:5000/',
+        headPath: '/y/',
         videoList: [],
         videoListCopy: [],
         showModal: false,
@@ -296,7 +296,7 @@ var videoDownload = (function (Vue, extendAM){
 
     videoDownload.init = function(){
         var that = this;
-        that.tasksData.headPath = window.location.protocol + '//' + window.location.host + '/';
+        that.tasksData.headPath = window.location.protocol + '//' + window.location.host + '/y/';
         that.createVm();
         that.getTaskList();
     }
